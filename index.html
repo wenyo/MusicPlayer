@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MusicPlayer</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
+    <link rel="stylesheet" href="css/min/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="content headerContent">
+                <!-- show singer -->
+                <div class="singer" v-if='!bShowAlbum'>
+                    <div class="singerInfo">
+                        <div class="white-layer"></div>
+                        <div class="imgBox">
+                            <img src="img/richard-jaimes-jI5lCCGprgM-unsplash.jpg">
+                        </div>
+                        <div class="singerName">Richard Green</div>
+                    </div>
+    
+                    <div class="singerDetail" v-if='!bShowAlbum'>
+                        <span class="follower">
+                            <span class="title">FOLLOWERS</span>
+                            <span class="people">5,790</span>
+                        </span>
+                        <span class="singerBtn">
+                            <span class='followBtn'>FOLLOW</span>
+                            <span class='playBtn'>PLAY</span>
+                        </span>
+                    </div>
+                </div>
+                <!-- show singer -->
+                
+                <!-- chose Album -->
+                <div class="albumInfo" v-if='bShowAlbum'>
+                    <div class="closeAbum" @click='bShowAlbum = false'>
+                        <i class="material-icons">close</i>
+                    </div>
+                    <div class="white-layer"></div>
+                    <div class="imgBox">
+                        <img :src="vAlbums[iAlbumNum].albumImg">
+                    </div>
+                    <div class="albumName">{{vAlbums[iAlbumNum].name}}</div>
+                </div>
+
+                <div class='albumDetailBox' v-if='bShowAlbum'>
+                    <div class="albumDetail">
+                        <span>{{vAlbums[iAlbumNum].year}}・{{vSongList[iAlbumNum].length}} songs・59 min</span>
+                        <span>Richard Green</span>
+                    </div>
+                    <span class="singerBtn">
+                        <span class='playBtn'>PLAY</span>
+                    </span>
+                </div>
+                <!-- chose Album -->
+                
+            </div>
+        </header>
+
+        <main>
+            <div class="content">
+                <div class="musicPlayer">
+                    <div class="songImg">
+                        <img src="./img/henrik-donnestad-V6Qd6zA85ck-unsplash.jpg" alt="">
+                    </div>
+                    <div class="songInfo">
+                        <span>Great Pleasure</span>
+                        <span>Richard Green</span>
+                    </div>
+                    <div class="control">
+                        <div class="playerBtn">
+                            <span class="preSong">
+                                <i class="material-icons">skip_previous</i>
+                            </span>
+                            <span v-if='!bPlayMusic' id='btnPlayPause' class='play' title='play''>
+                                <i class="material-icons">play_arrow</i>
+                            </span>
+                            <span v-else id='btnStop' class='stop' title='stop''>
+                                <i class="material-icons">pause</i>
+                            </span>
+                            <span class="nextSong">
+                                <i class="material-icons">skip_next</i>
+                            </span>
+                        </div>
+
+                        <span class="volume">
+                            <i class="material-icons">volume_up</i>
+                            <input type="range" id="volume-bar" title="volume" min="0" max="10" step="1" value="3">
+                        </span>
+
+                        <span class="fullScreen">
+                            <i class="material-icons">fullscreen</i>
+                        </span>
+                    </div>
+                    
+                </div>
+
+                <div class="musicDetail">
+
+                    <!-- show singer -->
+                    <div class="topSong" v-if='!bShowAlbum'>
+                        <div class="title">Top Songs</div>
+                        <table class="songList">
+                            <tr v-for='(song, key) in vTopSong'>
+                                <td>
+                                    <span class="num">{{key+1}}</span>
+                                </td>
+                                <td class="tdImg">
+                                    <img :src="vAlbums[song.albumNum].albumImg" alt="">
+                                </td>
+                                <td>{{song.name}}</td>
+                                <td>{{song.time}}</td>
+                                <td>
+                                    <i class="material-icons" @click='setMusicurl(key, true)' v-if='bPlayMusic == key || !bPlayMusic'>play_arrow</i>
+                                    <i class="material-icons" v-if='bPlayMusic == key && bPlayMusic'>pause</i>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="newRelease" v-if='!bShowAlbum' ref='album' :value='0' @click='choseAlbum(0)'>
+                        <div class="title">New Release</div>
+                        <div class="newInfo">
+                            <img :src="vAlbums[0].albumImg" alt="">
+                            <span class='newName'>
+                                <div>{{vAlbums[0].name}}</div>
+                                <div>{{vAlbums[0].date}}</div>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="recentAlbum" v-if='!bShowAlbum'>
+                        <div class="title">Recent Albums</div>
+                        <ul class="albumList">
+                            <li v-for='(album, index) in vAlbums' v-if='index !== 0' ref='album' @click='choseAlbum(index)'>
+                                <div class="albumImg">
+                                    <img :src="album.albumImg" alt="">
+                                </div>
+                                <div class="albumInfo">
+                                    <span>{{album.name}}</span>
+                                    <span>{{album.year}}</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="recommend" v-if='!bShowAlbum'>
+
+                        <div class="title">You May Like…</div>
+                        <div class="changeBtn">
+                            <i class="material-icons">keyboard_arrow_left</i>
+                            <i class="material-icons">keyboard_arrow_right</i>
+                        </div>
+
+                        <ul class="moreSinger">
+                            <li v-for='(singer, index) in vMoreSinger'>
+                                <div class="singerImg">
+                                    <img :src="singer.singerImg" alt="">
+                                </div>
+                                <span>{{singer.singerName}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- show singer -->
+
+                    <!-- chose Album -->
+                    <div class="choseAlbum" v-if='bShowAlbum'>
+                        <table class="albumSongList">
+                            <tr v-for='(song, key) in vSongList[iAlbumNum]'>
+                                <td>
+                                    <span class="num">{{key+1}}</span>
+                                </td>
+                                <td>{{song.name}}</td>
+                                <td>{{song.time}}</td>
+                                <td>
+                                    <i class="material-icons">play_arrow</i>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="recommend" v-if='bShowAlbum'>
+                        <div class="title">You May Like…</div>
+                        <div class="changeBtn">
+                            <i class="material-icons" @click = 'iShowAlbumRecommend -= 3;' v-if='iShowAlbumRecommend !== 0'>keyboard_arrow_left</i>
+                            <i class="material-icons" @click = 'iShowAlbumRecommend += 3;' v-if='vAlbumsRecommend.length > (iShowAlbumRecommend+3)'>keyboard_arrow_right</i>
+                        </div>
+
+                        <ul class="moreAlbum">
+                            <li v-for='(albums, index) in vAlbumsRecommend' v-if='index < (iShowAlbumRecommend+3) && index >= iShowAlbumRecommend' @click='choseAlbum(index)'>
+                                <div class="singerImg">
+                                    <img :src="albums.albumImg" alt="">
+                                </div>
+                                <span>{{albums.name}}</span>
+                                <span>Richard Green</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- chose Album -->
+
+                </div>
+            </div>
+        </main>
+    </div>
+   <script src="vue/all.js"></script>    
+</body>
+</html>

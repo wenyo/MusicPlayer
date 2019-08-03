@@ -1,0 +1,156 @@
+// Basic Setting
+.wrap{
+    display: inline-flex;
+    justify-content: center;
+    background-color: $color-thir;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    width: 100vw;
+    font-size: $fontsize-s;
+}
+
+header, main{
+    display: inline-block;
+    width: 50vw;
+}
+main{
+    padding-left: calc(540px + 3vw);
+}
+header{
+    position: fixed;
+    top:0;
+    left: 0;
+}
+
+.content{
+    margin: 3vh 5vw;
+}
+
+.headerContent{
+    display: inline-flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.singerInfo,
+.albumInfo{
+    .imgBox{
+        width: 540px;
+        height: 540px;
+        overflow: hidden;
+        text-align: center;
+        position: relative;
+        margin-bottom: 15px;
+    }
+    .white-layer{
+        width: 530px;
+        height: 524px;
+        background-color: $color-sec;
+        position: absolute;
+        top: -3%;
+        left: -5%;
+        z-index: 0;
+    }
+    img{
+        width: 540px;
+        height: auto;
+        position: absolute;
+        top: -100px;
+        left: 0;
+    }
+}
+.albumInfo img{
+    top: 0;
+}
+
+.singerName,
+.albumName{
+    width: 445px;
+    font-weight: bold;
+    display: inline-block;
+    text-decoration: underline;
+}
+
+.singerName{
+    font-size: $fontsize-xxxl;
+}
+.albumName{
+    font-size: $fontsize-xxl;
+}
+
+.singerDetail{
+    margin-top: 30px;
+    display: inline-flex;
+    align-items: flex-end;
+}
+
+.albumDetailBox{
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+}
+
+.albumDetail{
+    display: inline-flex;
+    flex-direction: column;
+    margin: 10px 0;
+    span:nth-child(2){
+        font-weight: bold;
+        margin-top: 3px;
+    }
+}
+
+.follower{
+    display: inline-flex;
+    flex-direction: column;
+    margin-right: 30px;
+    .people{
+        font-size: $fontsize-xl;
+        font-weight: bold;
+    }
+}
+
+.singerBtn{
+    span{
+        border-radius: 22px;
+        text-align: center;
+        padding: 8px 40px;
+        display: inline-block;
+        margin: 0 5px;
+        @include pointer;
+        transition: all .3s;
+    }
+    .followBtn{
+        border: 1px solid $color-six;
+        &:hover{
+            background-color: $color-six;
+            color: $color-sec;
+        }
+    }
+    .playBtn{
+        background-color: $color-master;
+        color: $color-sec;
+        &:hover{
+            background-color: $color-thir;
+            color: $color-master;
+            border: 1px solid $color-master;
+        }
+    }
+}
+
+.closeAbum{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+    @include pointer;
+    i{
+        font-size: $fontsize-xl;
+        color: $color-four;
+        transition: all .3s;
+        &:hover{
+            color: $color-six;
+        }
+    }
+}

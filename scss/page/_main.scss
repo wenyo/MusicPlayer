@@ -1,0 +1,256 @@
+// MAIN SETTING
+.musicDetail{
+    &>div{
+        margin-bottom: 8%;
+    }
+    .title{
+        font-size: $fontsize-l;
+        font-weight: bold;
+        margin-bottom: 16px;
+    }
+}
+
+// musicPlayer
+
+.musicPlayer{
+    width: 720px;
+    height: 96px;
+    color: $color-sec;
+    background-color: $color-sev;
+    box-shadow: 2px -4px 8px $color-five;
+
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 999;
+
+    display: inline-flex;
+    align-items: center;
+}
+
+.songImg{
+    height: 96px;
+    width: 96px;
+    overflow: hidden;
+    img{
+        width: 100%;
+        height: auto;
+    }
+}
+
+.songInfo{
+    display: inline-flex;
+    flex-direction: column;
+    width: 30%;
+    padding: 0 16px;
+
+    span:nth-child(1){
+        font-weight: bold;
+        margin-bottom: 4px;
+    }
+}
+
+.play, .stop{
+    font-size: $fontsize-l;
+    background-color: $color-sec;
+    color: $color-six;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $fontsize-xl;
+    padding: 4px;
+    @include pointer;
+}
+
+.preSong, .nextSong{
+    font-size: $fontsize-xl;
+    @include pointer;
+}
+
+.control{
+    width: calc(100% - 96px - 30%);
+    display: inline-flex;
+    justify-content: space-around;
+    align-content: center;
+}
+
+input[type="range"]{
+    overflow:hidden;     /* 限定範圍 */
+    width: 100px;
+    height: 20px;
+    outline: none;      /* 避免點選會有藍線或虛線 */
+    background: none;
+}
+
+input[type="range"]::-webkit-slider-thumb{
+    position: relative;    /* 設為相對位置，為了前後區塊的絕對位置而設定 */
+    width: 10px;
+    height: 10px;
+    background: $color-sec;
+    border-radius: 50%;
+    transition: .2s;        /* 點選放大時候的漸變時間 */
+}
+
+// songList
+
+.songList,
+.albumSongList{
+    width: 100%;
+    margin: 16px 0;
+    tr{
+        border-bottom: 1px solid $color-four;
+        text-align: left;
+    }
+    td{
+        vertical-align: middle;
+    }
+}
+
+.songList{
+    td{
+        &:nth-child(2){
+            width: 60px;
+        }
+        &:nth-child(5){
+            width: 25px;
+            @include pointer;
+        }
+    }
+    img{
+        width: 32px;
+        height: 32px;
+    }
+}
+
+.albumSongList{
+    td{
+        &:nth-child(4){
+            width: 25px;
+            @include pointer;
+        }
+    }
+}
+// newRelease
+
+.newInfo{
+    display: flex;
+    transition: all .3s;
+    @include pointer;
+    &:hover{
+        box-shadow: 5px 5px 10px $color-five;
+    }
+    img{
+        width: 160px;
+        height: auto;
+    }
+}
+
+.newName{
+    background-color: $color-sec;
+    width: calc(100% - 160px);
+
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    & div:nth-child(1){
+        font-size: $fontsize-m;
+        font-weight: bolder;
+        margin-bottom: 6px;
+    }
+}
+
+// recentAlbum
+
+.albumList{
+    width: 100%;
+    display: inline-flex;
+    flex-wrap: wrap;
+    //justify-content: space-between;
+    li{
+        margin-bottom: 3%;
+        margin-right: calc((100% - 480px) / 2);
+        &:nth-child(3n){
+            margin-right: 0;
+        }
+    }
+}
+
+.albumImg{
+    width: 160px;
+    height: 160px;
+    overflow: hidden;
+    @include pointer;
+    transition: all .3s;
+    img{
+        width: 100%;
+        height: auto;
+    }
+    &:hover{
+        box-shadow: 5px 5px 10px $color-five;
+    }
+}
+
+.albumInfo{
+    display: inline-flex;
+    flex-direction: column;
+    margin: 5px 0;
+    & span:nth-child(1){
+        font-weight: bold;
+        margin: 5px 0;
+    }
+}
+
+// recommend
+.recommend{
+    position: relative;
+}
+
+.changeBtn{
+    position: absolute;
+    right: 0;
+    top:0;
+    i{
+        @include pointer;
+    }
+}
+
+.moreSinger,
+.moreAlbum{
+    width: 100%;
+    display: inline-flex;
+    li{
+        margin: 0;
+        margin-right: calc((100% - 480px) / 2);
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        &:nth-child(3n){
+            margin-right: 0;
+        }
+        span:nth-child(1){
+            font-weight: bold;
+            margin-top: 7px;
+        }
+        span:nth-child(2){
+            margin-top: 7px;            
+        }
+    }
+}
+
+.singerImg{
+    width: 160px;
+    height: 160px;
+    border-radius: 160px;
+    overflow: hidden;
+    box-sizing: border-box;
+    transition: all .3s;
+    @include pointer;
+    &:hover{
+        box-shadow: 5px 5px 10px $color-five;
+    }
+    img{
+        width: 100%;
+        height: auto;
+    }
+}
