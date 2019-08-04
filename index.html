@@ -67,21 +67,22 @@
             <div class="content">
                 <div class="musicPlayer">
                     <div class="songImg">
-                        <img src="./img/henrik-donnestad-V6Qd6zA85ck-unsplash.jpg" alt="">
+                        <img :src="vAlbums[oCurrentSong.albumNum].albumImg" alt="">
                     </div>
                     <div class="songInfo">
-                        <span>Great Pleasure</span>
+                        <span>{{oCurrentSong.name}}</span>
                         <span>Richard Green</span>
                     </div>
+                    <audio ref='audio' :src="oCurrentSong.url"></audio>
                     <div class="control">
                         <div class="playerBtn">
                             <span class="preSong">
                                 <i class="material-icons">skip_previous</i>
                             </span>
-                            <span v-if='!bPlayMusic' id='btnPlayPause' class='play' title='play'>
+                            <span v-if='!bPlayMusic' id='btnPlayPause' class='play' title='play' @click='playMusic(iPlayMusic)'>
                                 <i class="material-icons">play_arrow</i>
                             </span>
-                            <span v-else id='btnStop' class='stop' title='stop'>
+                            <span v-else id='btnStop' class='stop' title='stop' @click='pauseMusic()'>
                                 <i class="material-icons">pause</i>
                             </span>
                             <span class="nextSong">
@@ -97,6 +98,9 @@
                         <span class="fullScreen">
                             <i class="material-icons">fullscreen</i>
                         </span>
+                        <div>
+                            <input type="range" name="progress" id="progress" min="0" max="145" step="1" value="3">
+                        </div>
                     </div>
                     
                 </div>
@@ -117,8 +121,8 @@
                                 <td>{{song.name}}</td>
                                 <td>{{song.time}}</td>
                                 <td>
-                                    <i class="material-icons" @click='setMusicurl(key, true)' v-if='bPlayMusic == key || !bPlayMusic'>play_arrow</i>
-                                    <i class="material-icons" v-if='bPlayMusic == key && bPlayMusic'>pause</i>
+                                    <i class="material-icons" @click='setMusicurl(key, true)' v-if='!song.play'>play_arrow</i>
+                                    <i class="material-icons" @click='pauseMusic()' v-if='song.play'>pause</i>
                                 </td>
                             </tr>
                         </table>
@@ -138,7 +142,7 @@
                     <div class="recentAlbum" v-if='!bShowAlbum'>
                         <div class="title">Recent Albums</div>
                         <ul class="albumList">
-                            <li v-for='(album, index) in vAlbums' v-if='index !== 0' ref='album' @click='choseAlbum(index)'>
+                            <li v-for='(album, index) in vAlbums' v-if='index !== 0' ref='album' @click='choseAlbum(album.num)'>
                                 <div class="albumImg">
                                     <img :src="album.albumImg" alt="">
                                 </div>
@@ -193,7 +197,7 @@
                         </div>
 
                         <ul class="moreAlbum">
-                            <li v-for='(albums, index) in vAlbumsRecommend' v-if='index < (iShowAlbumRecommend+3) && index >= iShowAlbumRecommend' @click='choseAlbum(index)'>
+                            <li v-for='(albums, index) in vAlbumsRecommend' v-if='index < (iShowAlbumRecommend+3) && index >= iShowAlbumRecommend' @click='choseAlbum(albums.num)'>
                                 <div class="singerImg">
                                     <img :src="albums.albumImg" alt="">
                                 </div>

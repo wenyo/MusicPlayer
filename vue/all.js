@@ -14,27 +14,32 @@ var wrap = new Vue({
                     'name': 'But I Must Explain To You (Deluxe)',
                     'albumImg': './img/henrik-donnestad-V6Qd6zA85ck-unsplash.jpg',
                     'year': '2019',
-                    'date': '2019.7.15'
+                    'date': '2019.7.15',
+                    'num': 0
                 },
                 {
                     'name': 'itself',
                     'albumImg': './img/bangkit-ristant-cuIwZaJAFS8-unsplash.jpg',
-                    'year': '2018'
+                    'year': '2018',
+                    'num': 1
                 },
                 {
                     'name': 'Solo',
                     'albumImg': './img/noah-silliman-gzhyKEo_cbU-unsplash.jpg',
-                    'year': '2017'
+                    'year': '2017',
+                    'num': 2
                 },
                 {
                     'name': 'Happiness',
                     'albumImg': './img/piron-guillaume-NM77255WWVA-unsplash.jpg',
-                    'year': '2015'
+                    'year': '2015',
+                    'num': 3
                 },
                 {
                     'name': 'No More Excuses',
                     'albumImg': './img/steve-johnson-IykhuSC5jgw-unsplash.jpg',
-                    'year': '2013'
+                    'year': '2013',
+                    'num': 4
                 },
             ],
             // 存放推薦專輯
@@ -122,7 +127,7 @@ var wrap = new Vue({
                 ],
                 [
                     {
-                        'name': 'piano Moment',
+                        'name': 'Piano Moment',
                         'url': './music/bensound-pianomoment.mp3',
                         'albumNum': 2,
                         'time': '1:05'
@@ -180,7 +185,7 @@ var wrap = new Vue({
                 ],
                 [
                     {
-                        'name': 'piano Moment',
+                        'name': 'Piano Moment',
                         'url': './music/bensound-pianomoment.mp3',
                         'albumNum': 4,
                         'time': '1:05'
@@ -208,9 +213,15 @@ var wrap = new Vue({
             // 播放中的 boolean
             bPlayMusic: false,
             // 播放的歌曲index
-            iPlayMusic: -1,
+            iPlayMusic: 0,
             song: '',
-            songSrc: ''
+            songSrc: '',
+            oCurrentSong: '',
+            currentTime: 0
+    },
+    created(){
+        this.insertTopSong();
+        this.getCurrentSong(this.vTopSong[this.iPlayMusic]);
     },
     methods:{
         //隨機生成 Top Song
@@ -243,30 +254,66 @@ var wrap = new Vue({
             }
         },
         // 設定被選取音樂
-        setMusicurl: function($key, top = false){
-            let sMusicUrl;
-            if(this.song){
+        setMusicurl: function($key, $top = false){
+            console.log("-------")
+            let currentSong;
+            if(this.bPlayMusic){
+                console.log(1)
                 this.pauseMusic();
             }
-            if(top){
-                sMusicUrl = this.vTopSong[$key].url
+            if($top){
+                console.log(2)
+                sMusicUrl = this.vTopSong[$key].url;
+                currentSong = this.vTopSong[$key];
+                this.vTopSong[$key].play = true;
             }else{
-                sMusicUrl = this.vSongList[iAlbumNum][$key].url
+                sMusicUrl = this.vSongList[this.iAlbumNum][$key].url;
+                currentSong = this.vSongList[this.iAlbumNum];
+                this.vSongList[this.iAlbumNum][$key].play = true;
+
             }
-            this.song = new Audio(sMusicUrl);
+            console.log(3)
+            this.getCurrentSong(currentSong);
             this.playMusic($key);
+        },
+        // 設定現正播放的音樂
+        getCurrentSong: function ($song) {
+            console.log($song)
+            this.oCurrentSong = $song;
         },
         // 播放音樂
         playMusic: function($key){
-            this.bPlayMusic = $key;
-            this.song.play();
+            this.iPlayMusic = $key;
+            this.bPlayMusic = true;
+            console.log("$key"+$key)
+            console.log(this.$refs.audio)
+            this.$refs.audio.play();
         },
         // 暫停音樂
         pauseMusic: function(){
-            this.song.pause();
-        }
+            this.bPlayMusic = false;
+            for(let val of this.vTopSong){
+                console.log("!")
+                val.play = false;
+            }
+            if(this.iAlbumNum !== -1){
+                for(let val2 of this.vSongList[this.iAlbumNum]){
+                    val2.play = false;
+                }
+            }
+            this.$refs.audio.pause();
+        },
+        progressChange() {
+            this.$refs.audio.currentTime = this.timeNow;            
+        },
     },
-    mounted(){
-        this.insertTopSong();
+    computed: {
+        //檢查現在音樂播放狀態
+        timeNow: function(sec){
+            console.log(sec)
+            // if(this.currentTime !== this.song.currentTime){
+            //     this.currentTime = this.song.currentTime;
+            // }
+        }
     },
 })
